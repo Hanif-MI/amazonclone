@@ -8,7 +8,9 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
+import datastore.createDataStore
 import org.hanif.amazonclone.database.getProductDatabase
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +26,11 @@ class MainActivity : ComponentActivity() {
         )
         val dao = getProductDatabase(applicationContext)
         setContent {
-            App()
+            App(
+                prefs = remember {
+                    createDataStore(applicationContext)
+                }
+            )
         }
     }
 }

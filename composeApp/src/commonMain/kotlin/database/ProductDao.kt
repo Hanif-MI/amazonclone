@@ -20,5 +20,6 @@ interface ProductDao {
     @Query("SELECT * FROM products")
     fun getAllProducts(): Flow<List<ProductEntity>>
 
-    @Query("SELECT EXISTS(SELECT * FROM products)")
-    fun isExists(): Boolean}
+//    @Query("SELECT EXISTS(SELECT * FROM products)")
+//    fun isExists(): Boolean
+}

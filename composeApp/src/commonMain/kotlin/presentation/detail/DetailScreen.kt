@@ -8,6 +8,7 @@ import amazonclone.composeapp.generated.resources.delivery
 import amazonclone.composeapp.generated.resources.export
 import amazonclone.composeapp.generated.resources.refresh
 import amazonclone.composeapp.generated.resources.vector
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -36,6 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,6 +54,7 @@ import domain.models.Product
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import presentation.common_components.CommonDialog
 import presentation.common_components.TextWithLineThrough
 import utils.calculateDiscountedPrice
 import kotlin.math.roundToInt
@@ -59,6 +62,7 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun DetailScreen(modifier: Modifier = Modifier, result: Product?, onClick: () -> Unit) {
+    var wantToShowAlert by remember { mutableStateOf(false) }
     if (result != null) {
         var selectedIndex by remember { mutableIntStateOf(0) }
 
@@ -285,7 +289,9 @@ fun DetailScreen(modifier: Modifier = Modifier, result: Product?, onClick: () ->
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(20))
-                                .background(Color(0xFFFF9900))
+                                .background(Color(0xFFFF9900)).clickable {
+                                    wantToShowAlert = true
+                                }
                         ) {
                             Text(
                                 "Add to Cart", style = TextStyle(
@@ -297,6 +303,18 @@ fun DetailScreen(modifier: Modifier = Modifier, result: Product?, onClick: () ->
                         }
                     }
                 }
+
+            }
+        }
+        AnimatedVisibility(wantToShowAlert){
+            CommonDialog(
+                title = "You item added in cart.",
+                message = "You item added in cart.",
+                onDismiss = {
+                    wantToShowAlert= !wantToShowAlert
+                },
+                confirmButtonText = "Back",
+            ){
 
             }
         }
